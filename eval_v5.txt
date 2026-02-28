@@ -1,0 +1,225 @@
+﻿python : [32m[INFO] 
+2026-02-23 14:30:57,918 
+[RapidOCR] base.py:22: 
+Using engine_name: 
+torch[0m
+At line:1 char:32
++ ... NG='utf-8'; python 
+test_specific_invoice.py 
+> test_invoice_eval_utf8_ 
+...
++                 ~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpeci    fied: 
+([32m[INFO    ] 
+202...name: tor    
+ch[0m:String) []    , 
+RemoteException
+    + FullyQualifiedE    
+rrorId : NativeCo    
+mmandError
+ 
+[32m[INFO] 2026-02-23 
+14:30:57,932 [RapidOCR] 
+device_config.py:50: 
+Using CPU device[0m
+[32m[INFO] 2026-02-23 
+14:30:57,959 [RapidOCR] 
+download_file.py:60: File 
+exists and is valid: C:\Us
+ers\sagar\AppData\Roaming\
+Python\Python314\site-pack
+ages\rapidocr\models\ch_PP
+-OCRv4_det_infer.pth[0m
+[32m[INFO] 2026-02-23 
+14:30:57,959 [RapidOCR] 
+main.py:50: Using C:\Users
+\sagar\AppData\Roaming\Pyt
+hon\Python314\site-package
+s\rapidocr\models\ch_PP-OC
+Rv4_det_infer.pth[0m
+[32m[INFO] 2026-02-23 
+14:30:58,329 [RapidOCR] 
+base.py:22: Using 
+engine_name: torch[0m
+[32m[INFO] 2026-02-23 
+14:30:58,330 [RapidOCR] 
+device_config.py:50: 
+Using CPU device[0m
+[32m[INFO] 2026-02-23 
+14:30:58,334 [RapidOCR] 
+download_file.py:60: File 
+exists and is valid: C:\Us
+ers\sagar\AppData\Roaming\
+Python\Python314\site-pack
+ages\rapidocr\models\ch_pt
+ocr_mobile_v2.0_cls_infer.
+pth[0m
+[32m[INFO] 2026-02-23 
+14:30:58,334 [RapidOCR] 
+main.py:50: Using C:\Users
+\sagar\AppData\Roaming\Pyt
+hon\Python314\site-package
+s\rapidocr\models\ch_ptocr
+_mobile_v2.0_cls_infer.pth
+[0m
+[32m[INFO] 2026-02-23 
+14:30:58,506 [RapidOCR] 
+base.py:22: Using 
+engine_name: torch[0m
+[32m[INFO] 2026-02-23 
+14:30:58,506 [RapidOCR] 
+device_config.py:50: 
+Using CPU device[0m
+[32m[INFO] 2026-02-23 
+14:30:58,541 [RapidOCR] 
+download_file.py:60: File 
+exists and is valid: C:\Us
+ers\sagar\AppData\Roaming\
+Python\Python314\site-pack
+ages\rapidocr\models\ch_PP
+-OCRv4_rec_infer.pth[0m
+[32m[INFO] 2026-02-23 
+14:30:58,541 [RapidOCR] 
+main.py:50: Using C:\Users
+\sagar\AppData\Roaming\Pyt
+hon\Python314\site-package
+s\rapidocr\models\ch_PP-OC
+Rv4_rec_infer.pth[0m
+Docling init config failed, falling back to default: name 'PdfPipelineOptions' is not defined
+Docling initialized successfully (Default).
+  TF-IDF vocabulary size: 268
+  GL code classes: 7 ΓÇö [np.str_('GL5100300'), np.str_('GL5100500'), np.str_('GL5100800'), np.str_('GL5200300'), np.str_('GL5300100'), np.str_('GL5300200'), np.str_('GL5400100')]
+  [OK] GL Auto-Coder [RandomForest] trained on 48 records
+  [OK] Training accuracy: 100.0%
+  [OK] Features per sample: 281 (vendor + amount + 268 TF-IDF + 11 keywords)
+======================================================================
+AGENTIC AI INVOICE ORCHESTRATION PLATFORM
+Multi-Agent System for Enterprise AP
+======================================================================
+Features Active:
+  - Feature 1: Multimodal Intake & Missing PO Triage
+  - Feature 2: Proactive SES Synchronization
+  - Feature 3: Semantic 3-Way Match (Vector Search)
+  - Feature 4: Dynamic Surcharge Resolution (Bayesian)
+  - Feature 5: ML GL Auto-Coding (RandomForest)
+  - Feature 6: Duplicate Detection (Kernel Density)
+  - Feature 7: Predictive ITC Reconciliation
+======================================================================
+==================================================
+Testing File: C:\Users\sagar\Downloads\23rd January1-26\LD-AA583721\Commercial Invoice.PDF
+==================================================
+
+--- STAGE 1: DOCLING EXTRACTION ---
+Docling processing: Commercial Invoice.PDF
+Extracting via LLM Context Parser...
+
+[Docling Markdown (Truncated to 1000 chars)]:
+## CUSTOMS INVOICE
+
+| Exporter                                                                                                         | Exporter                                                                                                         | Invoice No. LD-AA583721                                     | Invoice No. LD-AA583721                                     | Invoice No. LD-AA583721                                     | Date        | 23.01.2026    |
+|------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|-------------------------------------------------------------|-------------------------------------------------------------|-------------|---------------|
+| VAT Vakuumventile AG R├╝tistrasse 4 9469 Haag Switzerland                          
+
+--- STAGE 2: MISTRAL LLM PARSING ---
+{
+  "vendor_name": "VAT VAKUUMVENTILE AG",
+  "amount": 2725.8,
+  "po_number": null,
+  "description": "CUSTOMS INVOICE",
+  "line_items": [
+    {
+      "description": "977118 - gate with groove Commodity Code: 8481.9000",
+      "quantity": 5.0,
+      "rate": 545.16
+    }
+  ],
+  "status": "success"
+}
+
+--- STAGE 3: MULTI-AGENT ORCHESTRATION ---
+
+[Input to Orchestrator]:
+{
+  "id": "INV-TEST-001",
+  "vendor_id": "V-001",
+  "vendor_name": "VAT VAKUUMVENTILE AG",
+  "amount": 2725.8,
+  "description": "CUSTOMS INVOICE",
+  "po_number": null,
+  "line_items": [
+    {
+      "description": "977118 - gate with groove Commodity Code: 8481.9000",
+      "quantity": 5.0,
+      "rate": 545.16
+    }
+  ]
+}
+
+[Orchestrator Result]:
+{
+  "invoice_id": "INV-TEST-001",
+  "start_time": "2026-02-23T14:31:16.187115",
+  "stages": [
+    {
+      "stage": "intake",
+      "status": "completed",
+      "result": {
+        "vendor_name": "VAT VAKUUMVENTILE AG",
+        "amount": 2725.8,
+        "invoice_type": "travel",
+        "po_status": "missing",
+        "suggested_po": null,
+        "semantic_context": [
+          {
+            "concept": "duplicate_invoice",
+            "document": "Duplicate fraud suspicious same invoice number",
+            "similarity": 0.30151134156265025
+          },
+          {
+            "concept": "software_expense",
+            "document": "Software licenses subscriptions cloud services SaaS Microsoft Google Adobe AWS",
+            "similarity": 0.0
+          }
+        ],
+        "requires_po_request": true,
+        "requires_human_review": false
+      }
+    },
+    {
+      "stage": "gl_coding",
+      "status": "completed",
+      "result": {
+        "gl_code": "GL5100800",
+        "confidence": 0.3774699535500619,
+        "source": "random_forest",
+        "auto_post": false
+      }
+    },
+    {
+      "stage": "variance_check",
+      "status": "completed",
+      "result": {
+        "variance_status": "no_po",
+        "requires_review": false
+      }
+    },
+    {
+      "stage": "itc_reconciliation",
+      "status": "completed",
+      "result": {
+        "vendor_id": "V-001",
+        "trust_score": 0.92,
+        "payment_action": "full_payment",
+        "base_amount": 2725.8,
+        "gst_withheld": 0,
+        "gstr_status": "auto_verified",
+        "method": "predictive_itc"
+      }
+    }
+  ],
+  "final_status": "processed",
+  "end_time": "2026-02-23T14:31:22.631270"
+}

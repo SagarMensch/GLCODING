@@ -1,0 +1,472 @@
+================================================================================
+  JUBILANT - AGENTIC AI INVOICE ORCHESTRATION PLATFORM
+  COMPLETE DATABASE MASTER SCHEMA DOCUMENT
+================================================================================
+  Database:     PostgreSQL (Supabase)
+  ORM:          SQLAlchemy (declarative_base)
+  Host:         aws-1-ap-southeast-2.pooler.supabase.com:5432
+  DB Name:      postgres
+  Pool Size:    10 (max overflow: 20)
+  Config File:  database.py
+  Models File:  models.py
+================================================================================
+
+
+================================================================================
+TABLE 1: vendors
+================================================================================
+Purpose:
+  Stores vendor/supplier master data. Each vendor has a trust score and payment
+  history used by the ITC (Input Tax Credit) Bayesian Trust Agent to decide
+  payment splits between trusted and untrusted vendors.
+
+Columns:
+  +-----------------------+----------+-----------+----------+------------------+
+  | Column                | Type     | PK?       | Index?   | Default          |
+  +-----------------------+----------+-----------+----------+------------------+
+  | id                    | String   | YES       | YES      |                  |
+  | name                  | String   |           | YES      |                  |
+  | trust_score           | Float    |           |          | 0.6              |
+  | historical_payments   | Integer  |           |          | 0                |
+  | successful_payments   | Integer  |           |          | 0                |
+  +-----------------------+----------+-----------+----------+------------------+
+
+Relationships:
+  - Referenced by: purchase_orders.vendor_id (FK)
+  - Referenced by: invoices.vendor_id (FK)
+
+Sample Data (from seed_extensive.py):
+  ID      | Name                      | Trust  | Hist | Success
+  V-001   | Honda Components Ltd      | 0.92   | 48   | 45
+  V-002   | Syrma SGS Technology      | 0.88   | 35   | 31
+  V-003   | Tata Steel Limited        | 0.95   | 60   | 58
+  V-004   | Reliance Jio Infocomm     | 0.78   | 25   | 20
+  V-005   | Mahindra Logistics         | 0.85   | 40   | 35
+  V-006   | Infosys BPM Services      | 0.90   | 30   | 28
+  V-007   | Larsen & Toubro Ltd       | 0.93   | 55   | 52
+  V-008   | Wipro IT Services         | 0.82   | 20   | 17
+  V-009   | Godrej Properties         | 0.70   | 15   | 11
+  V-010   | DHL Express India         | 0.87   | 42   | 37
+
+Business Logic:
+  - trust_score is a float 0.0-1.0, used by the Bayesian ITC Trust Agent
+  - historical_payments / successful_payments ratio drives trust calculations
+  - Vendors with trust_score < 0.7 may have payment splits applied
+
+
+================================================================================
+TABLE 2: purchase_orders
+================================================================================
+Purpose:
+  Stores Purchase Order (PO) headers. POs are the primary matching reference
+  for incoming invoices. The 3-way match (PO vs Invoice vs GRN/SES) is a core
+  feature of the platform.
+
+Columns:
+  +-----------------------+----------+-----------+----------+------------------+
+  | Column                | Type     | PK?       | Index?   | Default          |
+  +-----------------------+----------+-----------+----------+------------------+
+  | id                    | String   | YES       |          |                  |
+  | vendor_id             | String   |           |          |                  |
+  | total_amount          | Float    |           |          |                  |
+  | status                | String   |           |          |                  |
+  +-----------------------+----------+-----------+----------+------------------+
+
+Foreign Keys:
+  - vendor_id -> vendors.id
+
+Relationships:
+  - vendor: relationship("Vendor")
+  - items: relationship("PurchaseOrderItem", back_populates="po")
+  - Referenced by: invoices.po_number (FK)
+
+Status Values:
+  - "open"   : PO is active, invoices can be matched against it
+  - "closed" : PO is fulfilled, no further invoices expected
+
+Sample Data (15 POs from seed_extensive.py):
+  ID            | Vendor | Amount     | Status
+  PO-2024-001   | V-001  | 150,000    | open
+  PO-2024-002   | V-002  | 75,000     | open
+  PO-2024-003   | V-003  | 500,000    | open
+  PO-2024-004   | V-004  | 120,000    | open
+  PO-2024-005   | V-005  | 200,000    | open
+  PO-2024-006   | V-006  | 300,000    | open
+  PO-2024-007   | V-007  | 1,500,000  | open
+  PO-2024-008   | V-008  | 180,000    | open
+  PO-2024-009   | V-009  | 2,400,000  | open
+  PO-2024-010   | V-010  | 90,000     | open
+  PO-2024-011   | V-001  | 85,000     | open
+  PO-2024-012   | V-003  | 320,000    | closed
+  PO-2024-013   | V-005  | 95,000     | open
+  PO-2024-014   | V-006  | 450,000    | open
+  PO-2024-015   | V-007  | 750,000    | open
+
+
+================================================================================
+TABLE 3: po_items  (PurchaseOrderItem)
+================================================================================
+Purpose:
+  Stores individual line items within a Purchase Order. These are used for
+  line-level semantic matching against invoice line items. The Matching Agent
+  uses TF-IDF vector similarity to match invoice descriptions to PO items.
+
+Columns:
+  +-----------------------+----------+-----------+----------+------------------+
+  | Column                | Type     | PK?       | Index?   | Default          |
+  +-----------------------+----------+-----------+----------+------------------+
+  | id                    | Integer  | YES       | YES      | auto-increment   |
+  | po_id                 | String   |           |          |                  |
+  | description           | String   |           |          |                  |
+  | quantity              | Float    |           |          |                  |
+  | rate                  | Float    |           |          |                  |
+  | uom                   | String   |           |          |                  |
+  +-----------------------+----------+-----------+----------+------------------+
+
+Foreign Keys:
+  - po_id -> purchase_orders.id
+
+Relationships:
+  - po: relationship("PurchaseOrder", back_populates="items")
+
+UOM (Unit of Measure) Values Used:
+  pack, piece, unit, ton, month, lot, phase, kit,
+  delivery, project, shipment, kg
+
+Sample Data:
+  PO-2024-001: Steel Fasteners M8 50-pack (100 x 500/pack)
+  PO-2024-001: Hex Bolts Grade 8.8 (200 x 500/piece)
+  PO-2024-002: PCB Assembly Module Type-A (50 x 1000/unit)
+  PO-2024-002: SMD Resistor 10K Ohm (5000 x 5/piece)
+  PO-2024-003: Hot Rolled Steel Coil 3mm (10 x 45000/ton)
+  PO-2024-003: Cold Rolled Sheet 1.2mm (5 x 10000/ton)
+  PO-2024-007: Civil Construction Phase-1 (1 x 1000000/lot)
+  PO-2024-007: Electrical Wiring Works (1 x 500000/lot)
+  (and more...)
+
+
+================================================================================
+TABLE 4: invoices
+================================================================================
+Purpose:
+  Core table storing all invoices received from vendors. This is the central
+  entity that flows through the entire multi-agent processing pipeline:
+    Intake -> Duplicate Check -> PO Matching -> SES Check ->
+    GL Auto-Coding -> Variance Check -> ITC Reconciliation
+
+Columns:
+  +-----------------------+----------+-----------+----------+---------------------+
+  | Column                | Type     | PK?       | Nullable | Default             |
+  +-----------------------+----------+-----------+----------+---------------------+
+  | id                    | String   | YES       |          |                     |
+  | vendor_id             | String   |           |          |                     |
+  | po_number             | String   |           | YES      |                     |
+  | ses_number            | String   |           | YES      |                     |
+  | amount                | Float    |           |          |                     |
+  | description           | String   |           |          |                     |
+  | date_received         | DateTime |           |          | datetime.utcnow     |
+  | status                | String   |           |          | "pending"           |
+  | gl_code               | String   |           | YES      |                     |
+  | is_duplicate          | Boolean  |           |          | False               |
+  +-----------------------+----------+-----------+----------+---------------------+
+
+Foreign Keys:
+  - vendor_id -> vendors.id
+  - po_number -> purchase_orders.id
+
+Status Values:
+  - "pending"   : Invoice received, not yet processed
+  - "approved"  : Invoice approved for payment
+  - "rejected"  : Invoice rejected (variance, duplicate, etc.)
+  - "blocked"   : Invoice blocked pending review
+
+GL Codes Used in System:
+  GL5100300  - Hardware / Raw Materials
+  GL5100400  - Maintenance
+  GL5100500  - Software / IT / Cloud
+  GL5100600  - Legal
+  GL5100700  - Consulting / IT Services (default fallback)
+  GL5100800  - Logistics / Shipping
+  GL5200100  - Travel
+  GL5200200  - Marketing
+  GL5200300  - Consulting (seed data variant)
+  GL5300100  - Rent / Property
+  GL5300200  - Utilities / Telecom
+  GL5300400  - Maintenance (seed data variant)
+  GL5400100  - Construction / Civil
+
+Seed Data Volume:
+  - seed_db.py:        2 historical invoices
+  - seed_extensive.py: 150 invoices with variance/UOM complexities
+    - 15% anomaly rate (price variance 10%-25%)
+    - 10% arrive without PO number
+    - Randomly assigned to vendors and POs
+
+
+================================================================================
+TABLE 5: invoice_line_items  (InvoiceLineItem)
+================================================================================
+Purpose:
+  Stores individual line items extracted from invoices. Used for line-level
+  3-way matching against PO items. The Matching Agent performs TF-IDF
+  vector similarity between invoice line item descriptions and PO item
+  descriptions. Also used for UOM variance detection training.
+
+Columns:
+  +-----------------------+----------+-----------+----------+------------------+
+  | Column                | Type     | PK?       | Index?   | Default          |
+  +-----------------------+----------+-----------+----------+------------------+
+  | id                    | Integer  | YES       | YES      | auto-increment   |
+  | invoice_id            | String   |           |          |                  |
+  | description           | String   |           |          |                  |
+  | quantity              | Float    |           |          |                  |
+  | rate                  | Float    |           |          |                  |
+  | uom                   | String   |           | YES      |                  |
+  | matched_po_item_id    | Integer  |           | YES      |                  |
+  +-----------------------+----------+-----------+----------+------------------+
+
+Foreign Keys:
+  - invoice_id -> invoices.id
+
+UOM Mismatch Injection (for ML training):
+  Seed data injects ~20% UOM mismatches to train variance detection:
+  - PO says "pack"  -> Invoice says "piece"
+  - PO says "ton"   -> Invoice says "kg"
+  - PO says "month" -> Invoice says "days"
+
+
+================================================================================
+TABLE 6: operational_proofs  (OperationalProof)
+================================================================================
+Purpose:
+  Stores unstructured operational data used as proof-of-work evidence when
+  a Service Entry Sheet (SES) is missing. The SES Agent performs semantic
+  search across this data to find evidence that work was completed, enabling
+  it to recommend SES creation instead of blocking the invoice.
+
+  Sources include: emails, gate logs, Teams/Slack chats, JIRA tickets, GRNs.
+
+Columns:
+  +-----------------------+----------+-----------+----------+------------------+
+  | Column                | Type     | PK?       | Index?   | Default          |
+  +-----------------------+----------+-----------+----------+------------------+
+  | id                    | Integer  | YES       | YES      | auto-increment   |
+  | source                | String   |           |          |                  |
+  | content               | String   |           |          |                  |
+  | date                  | DateTime |           |          |                  |
+  +-----------------------+----------+-----------+----------+------------------+
+
+Source Values:
+  email, gate_log, chat, email_plant_manager, gate_digital_log,
+  teams_chat_it, email_warehouse, email_facilities, jira_ticketing,
+  email_network
+
+Sample Data (9 proofs from seed_extensive.py):
+  - email_plant_manager: "Confirming HVAC installation Plant-B completed by L&T..."
+  - gate_digital_log:    "GRN-2024-8812: 10 Tons Hot Rolled Steel Coil received..."
+  - teams_chat_it:       "Wipro cloud migration Phase 1 is done..."
+  - email_warehouse:     "Alert: We only received 5000 units of SMD Resistors..."
+  - gate_digital_log:    "DHL Express picked up 50 packages..."
+  - email_facilities:    "Godrej rent for March paid..."
+  - jira_ticketing:      "Infosys SLA met for current month: 99.8% uptime..."
+  - gate_digital_log:    "Honda parts delivery. Note: Arrived in 20 'boxes'..."
+  - email_network:       "Jio bandwidth upgraded to 1Gbps active..."
+
+
+================================================================================
+TABLE 7: audit_logs  (AuditLog)
+================================================================================
+Purpose:
+  Stores the episodic memory of the multi-agent system. Every decision made
+  by an agent or a human reviewer is recorded here. This forms the training
+  data for reinforcement learning and helps the system learn from past
+  human decisions on variance approvals/rejections.
+
+Columns:
+  +-----------------------+----------+-----------+----------+---------------------+
+  | Column                | Type     | PK?       | Index?   | Default             |
+  +-----------------------+----------+-----------+----------+---------------------+
+  | id                    | Integer  | YES       | YES      | auto-increment      |
+  | invoice_id            | String   |           |          |                     |
+  | action                | String   |           |          |                     |
+  | agent                 | String   |           |          |                     |
+  | details               | Text     |           |          |                     |
+  | timestamp             | DateTime |           |          | datetime.utcnow     |
+  +-----------------------+----------+-----------+----------+---------------------+
+
+Foreign Keys:
+  - invoice_id -> invoices.id
+
+Action Values:
+  - "approved_variance"  : Human approved a price variance
+  - "rejected_variance"  : Human rejected a price variance
+  - "po_requested"       : Agent emailed vendor for missing PO
+  - "auto_approved"      : System auto-approved (within tolerance)
+
+Agent Values:
+  - "human_reviewer"     : Manual human decision
+  - "intake_agent"       : Intake & Missing PO Triage Agent
+  - "root_orchestrator"  : Root Orchestrator Agent
+  - "matching_agent"     : PO/SES Matching Agent
+  - "gl_agent"           : GL Auto-Coding Agent
+  - "duplicate_agent"    : KDE Duplicate Detection Agent
+  - "itc_agent"          : ITC Trust Scoring Agent
+  - "surcharge_agent"    : Surcharge/Variance Agent
+
+
+================================================================================
+ENTITY-RELATIONSHIP DIAGRAM (TEXT)
+================================================================================
+
+  vendors
+    |
+    |--- (1:N) ---> purchase_orders
+    |                    |
+    |                    |--- (1:N) ---> po_items
+    |
+    |--- (1:N) ---> invoices
+                         |
+                         |--- (N:1) ---> purchase_orders  (optional FK)
+                         |
+                         |--- (1:N) ---> invoice_line_items
+                         |
+                         |--- (1:N) ---> audit_logs
+
+  operational_proofs  (standalone, no FK relationships)
+
+
+================================================================================
+MULTI-AGENT SYSTEM ARCHITECTURE (How Agents Use the DB)
+================================================================================
+
+  ┌─────────────────────────────────────────────────────────┐
+  │              ROOT ORCHESTRATOR AGENT                     │
+  │  Coordinates all sub-agents, manages invoice pipeline    │
+  └──────────┬──────────┬──────────┬──────────┬─────────────┘
+             │          │          │          │
+    ┌────────▼──┐ ┌─────▼─────┐ ┌─▼──────┐ ┌▼───────────┐
+    │  INTAKE   │ │ MATCHING  │ │   GL   │ │ DUPLICATE  │
+    │  AGENT    │ │  AGENT    │ │ AGENT  │ │   AGENT    │
+    │           │ │           │ │        │ │            │
+    │ Reads:    │ │ Reads:    │ │Reads:  │ │ Reads:     │
+    │ vendors   │ │ po_items  │ │invoices│ │ invoices   │
+    │ pur.orders│ │ pur.orders│ │vendors │ │            │
+    │           │ │ op.proofs │ │        │ │ Uses:      │
+    │ Writes:   │ │           │ │Uses:   │ │ KDE        │
+    │ invoices  │ │ Writes:   │ │ML/TF-IDF│ │ PCA       │
+    │ audit_logs│ │ audit_logs│ │XGBoost │ │ Hashing    │
+    └───────────┘ └───────────┘ └────────┘ └────────────┘
+
+    ┌────────────┐  ┌─────────────┐
+    │    ITC     │  │ SURCHARGE   │
+    │   AGENT    │  │   AGENT     │
+    │            │  │             │
+    │ Reads:     │  │ Reads:      │
+    │ vendors    │  │ invoices    │
+    │ invoices   │  │ po_items    │
+    │            │  │             │
+    │ Uses:      │  │ Uses:       │
+    │ Bayesian   │  │ Bayesian    │
+    │ Trust Score│  │ Variance    │
+    └────────────┘  └─────────────┘
+
+
+================================================================================
+API ENDPOINTS (Pydantic Request Models)
+================================================================================
+
+1. InvoiceIntakeRequest (POST /api/intake)
+   - source: str           (default: "email") — email, portal, whatsapp
+   - vendor_id: str
+   - vendor_name: str
+   - amount: float
+   - description: str
+   - po_number: Optional[str]
+   - line_items: Optional[List[Dict]]
+   - attachment_url: Optional[str]
+
+2. InvoiceProcessingRequest (POST /api/process)
+   - invoice_id: str
+   - enable_agents: bool    (default: True)
+
+3. FeedbackRequest (POST /api/feedback)
+   - invoice_id: str
+   - predicted_action: str
+   - corrected_action: str
+   - reasoning: str
+
+
+================================================================================
+IN-MEMORY STRUCTURES (Not persisted in DB)
+================================================================================
+
+Global Memory Layer (server.py - GlobalMemoryLayer class):
+  These are in-memory structures initialized at server startup, NOT stored in
+  the Supabase PostgreSQL database.
+
+  1. Semantic Memory (TF-IDF Vector Index):
+     - 15 semantic documents covering expense categories
+     - Used for GL code classification and invoice routing
+     - Categories: software, travel, hardware, rent, utility, marketing,
+       maintenance, legal, consulting, logistics, po_matching, ses_missing,
+       duplicate_invoice, price_variance, itc_reconciliation
+
+  2. Episodic Memory (In-memory list):
+     - Past vendor interactions added at runtime
+     - Cleared on server restart
+
+  3. Procedural Memory (Workflow definitions):
+     - intake_workflow:    receive -> extract -> classify -> route
+     - matching_workflow:  po_lookup -> fuzzy_match -> semantic_reconcile -> approve
+     - gl_coding_workflow: extract_features -> predict -> threshold_check -> post_or_escalate
+     - duplicate_workflow: hash_invoice -> vector_project -> density_check -> flag
+     - itc_workflow:       vendor_score -> calculate_trust -> split_payment -> monitor_gstr
+
+
+================================================================================
+SEED DATA SUMMARY
+================================================================================
+
+  seed_db.py (Basic Seed):
+    - 5 vendors
+    - 3 purchase orders
+    - 4 PO line items
+    - 3 operational proofs
+    - 2 historical invoices
+
+  seed_extensive.py (ML Training Seed):
+    - 10 vendors
+    - 15 purchase orders (with 20+ line items)
+    - 150 invoices (with variance and UOM complexities)
+    - 150+ invoice line items (with 20% UOM mismatch injection)
+    - 150 audit logs (episodic memory for RL)
+    - 9 operational proofs (unstructured RAG context)
+
+  Data Characteristics for ML Training:
+    - 15% anomaly rate in invoices (price variance 10%-25%)
+    - 10% of invoices arrive without PO number
+    - 20% UOM mismatch rate (pack<->piece, ton<->kg, month<->days)
+    - GL codes assigned based on vendor domain mapping
+    - Audit logs capture human decisions on variance approval/rejection
+
+
+================================================================================
+TECHNOLOGY STACK
+================================================================================
+
+  Database:       PostgreSQL on Supabase (AWS ap-southeast-2)
+  ORM:            SQLAlchemy 2.x with declarative_base
+  Backend:        FastAPI + Uvicorn
+  ML Libraries:   scikit-learn (RandomForest, TF-IDF, KDE, PCA)
+                  XGBoost (optional, falls back to RandomForest)
+  OCR:            Docling (primary) + PyPDF (fallback)
+  LLM:            Mistral AI (mistral-small-latest via API)
+  Vector Search:  TF-IDF + Cosine Similarity (in-memory)
+  Frontend:       React + TypeScript + Vite + TailwindCSS
+  Supabase SDK:   supabase-py (Python client)
+
+
+================================================================================
+  END OF MASTER SCHEMA DOCUMENT
+  Generated: 2026-02-26
+================================================================================

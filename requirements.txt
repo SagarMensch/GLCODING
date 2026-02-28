@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+sqlalchemy
+supabase
+pandas
+numpy
+scikit-learn
+python-multipart
+pydantic
+requests
+python-dotenv
+pypdf
+xgboost
+docling
+gunicorn
+psycopg2-binary
+httpx

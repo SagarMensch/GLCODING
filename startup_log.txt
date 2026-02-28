@@ -1,0 +1,65 @@
+﻿python : INFO:     
+Started server 
+process [45524]
+At line:1 char:1
++ python server.py 
+2>&1 | Out-File 
+-FilePath c:\Users\sag
+ar\Downloads\j ...
++ 
+~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (INFO:        
+ Started server pr    
+ocess [45524]:Str    
+ing) [], RemoteEx    
+ception
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+INFO:     Waiting for 
+application startup.
+INFO:     Application 
+startup complete.
+ERROR:    [Errno 
+10048] error while 
+attempting to bind on 
+address ('0.0.0.0', 
+3005): [winerror 
+10048] only one usage 
+of each socket 
+address 
+(protocol/network 
+address/port) is 
+normally permitted
+INFO:     Waiting for 
+application shutdown.
+INFO:     Application 
+shutdown complete.
+Docling initialized successfully.
+  TF-IDF vocabulary size: 268
+  GL code classes: 7 ù [np.str_('GL5100300'), np.str_('GL5100500'), np.str_('GL5100800'), np.str_('GL5200300'), np.str_('GL5300100'), np.str_('GL5300200'), np.str_('GL5400100')]
+  [OK] GL Auto-Coder [RandomForest] trained on 48 records
+  [OK] Training accuracy: 100.0%
+  [OK] Features per sample: 281 (vendor + amount + 268 TF-IDF + 11 keywords)
+======================================================================
+AGENTIC AI INVOICE ORCHESTRATION PLATFORM
+Multi-Agent System for Enterprise AP
+======================================================================
+Features Active:
+  - Feature 1: Multimodal Intake & Missing PO Triage
+  - Feature 2: Proactive SES Synchronization
+  - Feature 3: Semantic 3-Way Match (Vector Search)
+  - Feature 4: Dynamic Surcharge Resolution (Bayesian)
+  - Feature 5: ML GL Auto-Coding (RandomForest)
+  - Feature 6: Duplicate Detection (Kernel Density)
+  - Feature 7: Predictive ITC Reconciliation
+======================================================================
+
+======================================================================
+Starting Agentic AI Invoice Orchestration Platform
+Server: http://localhost:3005
+======================================================================
+

@@ -1,0 +1,567 @@
+﻿python : Traceback 
+(most recent call 
+last):
+At line:1 char:32
++ ... :PYTHONIOENCODIN
+G='utf-8'; python 
+seed_extensive.py 2> 
+seed_error.txt
++                     
+           ~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (Traceback    
+ (most recent call    
+ last)::String) [    
+], RemoteExceptio    n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\engine\
+base.py", line 2125, 
+in _exec_insertmany_co
+ntext
+    
+dialect.do_execute(
+    
+~~~~~~~~~~~~~~~~~~^
+        cursor,
+        ^^^^^^^
+    ...<2 lines>...
+        context,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\engine\
+default.py", line 
+952, in do_execute
+    cursor.execute(sta
+tement, parameters)
+    ~~~~~~~~~~~~~~^^^^
+^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.Undefi
+nedColumn: column 
+"uom" of relation 
+"invoice_line_items" 
+does not exist
+LINE 1: ...e_items 
+(invoice_id, 
+description, 
+quantity, rate, uom, 
+match...
+                      
+                      
+                 ^
+
+
+The above exception 
+was the direct cause 
+of the following 
+exception:
+
+Traceback (most 
+recent call last):
+  File "C:\Users\sagar
+\Downloads\jubilant\se
+ed_extensive.py", 
+line 236, in <module>
+    db.commit()
+    ~~~~~~~~~^^
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\orm\ses
+sion.py", line 2030, 
+in commit
+    trans.commit(_to_r
+oot=True)
+    ~~~~~~~~~~~~^^^^^^
+^^^^^^^^^
+  File "<string>", 
+line 2, in commit
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\orm\sta
+te_changes.py", line 
+137, in _go
+    ret_value = 
+fn(self, *arg, **kw)
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\orm\ses
+sion.py", line 1311, 
+in commit
+    
+self._prepare_impl()
+    
+~~~~~~~~~~~~~~~~~~^^
+  File "<string>", 
+line 2, in 
+_prepare_impl
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\orm\sta
+te_changes.py", line 
+137, in _go
+    ret_value = 
+fn(self, *arg, **kw)
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\orm\ses
+sion.py", line 1286, 
+in _prepare_impl
+    
+self.session.flush()
+    
+~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\orm\ses
+sion.py", line 4331, 
+in flush
+    
+self._flush(objects)
+    
+~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\orm\ses
+sion.py", line 4466, 
+in _flush
+    with 
+util.safe_reraise():
+         
+~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\util\la
+nghelpers.py", line 
+224, in __exit__
+    raise exc_value.wi
+th_traceback(exc_tb)
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\orm\ses
+sion.py", line 4427, 
+in _flush
+    flush_context.exec
+ute()
+    ~~~~~~~~~~~~~~~~~~
+~~~^^
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\orm\uni
+tofwork.py", line 
+466, in execute
+    rec.execute(self)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\orm\uni
+tofwork.py", line 
+642, in execute
+    util.preloaded.orm
+_persistence.save_obj(
+    ~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~^
+        self.mapper,
+        ^^^^^^^^^^^^
+        uow.states_for
+_mapper_hierarchy(self
+.mapper, False, 
+False),
+        ^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^
+        uow,
+        ^^^^
+    )
+    ^
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\orm\per
+sistence.py", line 
+93, in save_obj
+    _emit_insert_state
+ments(
+    ~~~~~~~~~~~~~~~~~~
+~~~~~^
+        base_mapper,
+        ^^^^^^^^^^^^
+    ...<3 lines>...
+        insert,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\orm\per
+sistence.py", line 
+1143, in _emit_insert_
+statements
+    result = 
+connection.execute(
+        statement, 
+multiparams, execution
+_options=execution_opt
+ions
+    )
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\engine\
+base.py", line 1419, 
+in execute
+    return meth(
+        self,
+        
+distilled_parameters,
+        
+execution_options or 
+NO_OPTIONS,
+    )
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\sql\ele
+ments.py", line 527, 
+in 
+_execute_on_connection
+    return connection.
+_execute_clauseelement
+(
+           ~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+^
+        self, 
+distilled_params, 
+execution_options
+        ^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^^^
+    )
+    ^
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\engine\
+base.py", line 1641, 
+in 
+_execute_clauseelement
+    ret = 
+self._execute_context(
+        dialect,
+    ...<8 lines>...
+        
+cache_hit=cache_hit,
+    )
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\engine\
+base.py", line 1844, 
+in _execute_context
+    return self._exec_
+insertmany_context(dia
+lect, context)
+           ~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~^^^^
+^^^^^^^^^^^^^^
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\engine\
+base.py", line 2133, 
+in _exec_insertmany_co
+ntext
+    self._handle_dbapi
+_exception(
+    ~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~^
+        e,
+        ^^
+    ...<4 lines>...
+        
+is_sub_exec=True,
+        
+^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\engine\
+base.py", line 2363, 
+in _handle_dbapi_excep
+tion
+    raise sqlalchemy_e
+xception.with_tracebac
+k(exc_info[2]) from e
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\engine\
+base.py", line 2125, 
+in _exec_insertmany_co
+ntext
+    
+dialect.do_execute(
+    
+~~~~~~~~~~~~~~~~~~^
+        cursor,
+        ^^^^^^^
+    ...<2 lines>...
+        context,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\sagar
+\AppData\Roaming\Pytho
+n\Python314\site-packa
+ges\sqlalchemy\engine\
+default.py", line 
+952, in do_execute
+    cursor.execute(sta
+tement, parameters)
+    ~~~~~~~~~~~~~~^^^^
+^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.Program
+mingError: (psycopg2.e
+rrors.UndefinedColumn)
+ column "uom" of 
+relation 
+"invoice_line_items" 
+does not exist
+LINE 1: ...e_items 
+(invoice_id, 
+description, 
+quantity, rate, uom, 
+match...
+                      
+                      
+                 ^
+
+[SQL: INSERT INTO 
+invoice_line_items 
+(invoice_id, 
+description, 
+quantity, rate, uom, 
+matched_po_item_id) 
+SELECT p0::VARCHAR, 
+p1::VARCHAR, 
+p2::FLOAT, p3::FLOAT, 
+p4::VARCHAR, 
+p5::INTEGER FROM 
+(VALUES 
+(%(invoice_id__0)s, 
+%(description__0)s, 
+%(quantity__0)s, %( 
+... 26508 characters 
+truncated ... 5, 
+sen_counter) ORDER BY 
+sen_counter RETURNING 
+invoice_line_items.id,
+ 
+invoice_line_items.id 
+AS id__1]
+[parameters: {'matched
+_po_item_id__0': 
+None, 'uom__0': 
+'lot', 'rate__0': 
+750790.541258815, 
+'quantity__0': 1.0, 
+'invoice_id__0': 
+'INV-2024-1001', 
+'description__0': 
+'HVAC Installation 
+Plant-B', 'matched_po_
+item_id__1': None, 
+'uom__1': 'ton', 
+'rate__1': 50000.0, 
+'quantity__1': 6.4, 
+'invoice_id__1': 
+'INV-2024-1002', 
+'description__1': 
+'Structural Steel 
+H-Beam', 'matched_po_i
+tem_id__2': None, 
+'uom__2': 'month', 
+'rate__2': 
+30137.757326111612, 
+'quantity__2': 6.0, 
+'invoice_id__2': 
+'INV-2024-1003', 
+'description__2': 'IT 
+Helpdesk Support L1', 
+'matched_po_item_id__3
+': None, 'uom__3': 
+'month', 'rate__3': 
+20091.83821740774, 
+'quantity__3': 6.0, 
+'invoice_id__3': 
+'INV-2024-1003', 
+'description__3': 
+'Application Support 
+L2', 'matched_po_item_
+id__4': None, 
+'uom__4': 'piece', 
+'rate__4': 
+501.5359277988698, 
+'quantity__4': 100.0, 
+'invoice_id__4': 
+'INV-2024-1004', 
+'description__4': 
+'Steel Fasteners M8 
+50-pack', 'matched_po_
+item_id__5': None, 
+'uom__5': 'piece', 
+'rate__5': 
+501.5359277988698, 
+'quantity__5': 200.0, 
+'invoice_id__5': 
+'INV-2024-1004', 
+'description__5': 
+'Hex Bolts Grade 
+8.8', 'matched_po_item
+_id__6': None, 
+'uom__6': 'pack', 
+'rate__6': 
+501.55225470324615, 
+'quantity__6': 100.0, 
+'invoice_id__6': 
+'INV-2024-1005', 
+'description__6': 
+'Steel Fasteners M8 
+50-pack', 'matched_po_
+item_id__7': None, 
+'uom__7': 'piece', 
+'rate__7': 
+501.55225470324615, 
+'quantity__7': 200.0, 
+'invoice_id__7': 
+'INV-2024-1005', 
+'description__7': 
+'Hex Bolts Grade 
+8.8', 'matched_po_item
+_id__8': None, 
+'uom__8': 'month' ... 
+1190 parameters 
+truncated ... 
+'invoice_id__206': 
+'INV-2024-1145', 
+'description__206': 
+'HVAC Installation 
+Plant-B', 'matched_po_
+item_id__207': None, 
+'uom__207': 'phase', 
+'rate__207': 66000.0, 
+'quantity__207': 
+2.4000000000000004, 
+'invoice_id__207': 
+'INV-2024-1146', 
+'description__207': 
+'Cloud Migration 
+Services', 'matched_po
+_item_id__208': None, 
+'uom__208': 'pack', 
+'rate__208': 
+499.8144923334498, 
+'quantity__208': 
+100.0, 
+'invoice_id__208': 
+'INV-2024-1147', 
+'description__208': 
+'Steel Fasteners M8 
+50-pack', 'matched_po_
+item_id__209': None, 
+'uom__209': 'piece', 
+'rate__209': 
+499.8144923334498, 
+'quantity__209': 
+200.0, 
+'invoice_id__209': 
+'INV-2024-1147', 
+'description__209': 
+'Hex Bolts Grade 
+8.8', 'matched_po_item
+_id__210': None, 
+'uom__210': 'piece', 
+'rate__210': 
+498.3275260547164, 
+'quantity__210': 
+100.0, 
+'invoice_id__210': 
+'INV-2024-1148', 
+'description__210': 
+'Steel Fasteners M8 
+50-pack', 'matched_po_
+item_id__211': None, 
+'uom__211': 'piece', 
+'rate__211': 
+498.3275260547164, 
+'quantity__211': 
+200.0, 
+'invoice_id__211': 
+'INV-2024-1148', 
+'description__211': 
+'Hex Bolts Grade 
+8.8', 'matched_po_item
+_id__212': None, 
+'uom__212': 
+'shipment', 
+'rate__212': 
+200.09640778339914, 
+'quantity__212': 
+300.0, 
+'invoice_id__212': 
+'INV-2024-1149', 
+'description__212': 
+'Express Courier 
+Domestic', 'matched_po
+_item_id__213': None, 
+'uom__213': 'kg', 
+'rate__213': 
+1000.4820389169957, 
+'quantity__213': 
+30.0, 
+'invoice_id__213': 
+'INV-2024-1149', 
+'description__213': 
+'International 
+Freight Air', 'matched
+_po_item_id__214': 
+None, 'uom__214': 
+'kit', 'rate__214': 
+1708.182362121175, 
+'quantity__214': 
+50.0, 
+'invoice_id__214': 
+'INV-2024-1150', 
+'description__214': 
+'Brake Disc Assembly 
+Kit'}]
+(Background on this 
+error at: https://sqla
+lche.me/e/20/f405)

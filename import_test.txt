@@ -1,0 +1,62 @@
+﻿python : Traceback (most 
+recent call last):
+At line:1 char:1
++ python -c "import 
+server" 2>&1 | Out-File 
+-FilePath 
+c:\Users\sagar\Do ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~
+    + CategoryInfo        
+      : NotSpeci    fied: 
+(Traceback     (most 
+recent call     
+last)::String) [    ], 
+RemoteExceptio    n
+    + FullyQualifiedE    
+rrorId : NativeCo    
+mmandError
+ 
+  File "C:\Users\sagar\Dow
+nloads\jubilant\server.py"
+, line 866, in 
+train_from_db
+    print(f"  \u2713 GL 
+Auto-Coder [{model_name}] 
+trained on {len(history)} 
+records")
+    ~~~~~^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^
+  File "C:\Python314\Lib\e
+ncodings\cp1252.py", line 
+19, in encode
+    return codecs.charmap_
+encode(input,self.errors,e
+ncoding_table)[0]
+           ~~~~~~~~~~~~~~~
+~~~~~~^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^
+UnicodeEncodeError: 
+'charmap' codec can't 
+encode character '\u2713' 
+in position 2: character 
+maps to <undefined>
+Docling initialized successfully.
+  TF-IDF vocabulary size: 268
+  GL code classes: 7 ù [np.str_('GL5100300'), np.str_('GL5100500'), np.str_('GL5100800'), np.str_('GL5200300'), np.str_('GL5300100'), np.str_('GL5300200'), np.str_('GL5400100')]
+GL training failed: 'charmap' codec can't encode character '\u2713' in position 2: character maps to <undefined>
+======================================================================
+AGENTIC AI INVOICE ORCHESTRATION PLATFORM
+Multi-Agent System for Enterprise AP
+======================================================================
+Features Active:
+  - Feature 1: Multimodal Intake & Missing PO Triage
+  - Feature 2: Proactive SES Synchronization
+  - Feature 3: Semantic 3-Way Match (Vector Search)
+  - Feature 4: Dynamic Surcharge Resolution (Bayesian)
+  - Feature 5: ML GL Auto-Coding (RandomForest)
+  - Feature 6: Duplicate Detection (Kernel Density)
+  - Feature 7: Predictive ITC Reconciliation
+======================================================================
